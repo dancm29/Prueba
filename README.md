@@ -1,4 +1,4 @@
-# Sistema de Pedidos para Cocina - Negocio Dani Bro's
+# Sistema de Pedidos para Cocina
 
 ## Descripción del proyecto
 Sistema web para visualizar y gestionar los pedidos realizados por los clientes desde el área de cocina
@@ -17,6 +17,6 @@ Sistema web para visualizar y gestionar los pedidos realizados por los clientes 
 
 ## Dónde encontrar ayuda
 - Contactar al desarrollador del proyecto
-- Revisar el código comentado en `script.js`
+
 
 
