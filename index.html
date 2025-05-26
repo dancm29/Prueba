@@ -16,8 +16,8 @@
             PEDIDOS COCINA
             <span class="orders-count">0</span>
         </div>
-        <button class="btn-ingredients" id="reportIngredients">
-            <i class="fas fa-box-open me-2"></i> INGREDIENTES AGOTADOS
+        <button class="btn-ingredients" id="reportDishes">
+            <i class="fas fa-utensils me-2"></i> PLATILLOS AGOTADOS
         </button>
     </header>
 
@@ -29,7 +29,7 @@
         </div>
     </main>
 
-    <!-- Notificación de ingredientes -->
+    <!-- Notificación -->
     <div id="ingredient-notification" class="ingredient-notification"></div>
 
     <!-- Pie de página -->
@@ -37,76 +37,27 @@
         <div id="current-time"></div>
     </footer>
 
-    <!-- Modal para ingredientes agotados -->
-    <div class="modal fade" id="ingredientsModal" tabindex="-1" aria-hidden="true">
+    <!-- Modal para platillos agotados -->
+    <div class="modal fade" id="dishesModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">INGREDIENTES AGOTADOS</h5>
+                    <h5 class="modal-title">PLATILLOS AGOTADOS</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>MARCA LOS INGREDIENTES QUE SE HAN AGOTADO:</p>
-                    <div class="ingredients-list">
-                        <!-- Ingredientes principales -->
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing1" value="Tortillas">
-                            <label for="ing1">Tortillas</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing2" value="Pollo">
-                            <label for="ing2">Pollo</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing3" value="Queso">
-                            <label for="ing3">Queso</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing4" value="Lechuga">
-                            <label for="ing4">Lechuga</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing5" value="Tomate">
-                            <label for="ing5">Tomate</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing6" value="Crema">
-                            <label for="ing6">Crema</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing7" value="Pan">
-                            <label for="ing7">Pan</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing8" value="Carne">
-                            <label for="ing8">Carne</label>
-                        </div>
-                        <!-- Ingredientes postres -->
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing9" value="Galletas">
-                            <label for="ing9">Galletas</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing10" value="Queso crema">
-                            <label for="ing10">Queso crema</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing11" value="Helado">
-                            <label for="ing11">Helado</label>
-                        </div>
-                        <div class="ingredient-item">
-                            <input type="checkbox" class="ingredient-checkbox" id="ing12" value="Leche condensada">
-                            <label for="ing12">Leche condensada</label>
-                        </div>
+                    <p>MARCA LOS PLATILLOS QUE SE HAN AGOTADO:</p>
+                    <div id="dishesList">
+                        <!-- Los platillos se cargarán dinámicamente -->
                     </div>
                     <div class="mb-3 mt-3">
-                        <label for="otherIngredient" class="form-label">OTRO INGREDIENTE:</label>
-                        <input type="text" class="form-control" id="otherIngredient" placeholder="Especificar otro ingrediente">
+                        <label for="timeInput" class="form-label">TIEMPO DE PREPARACIÓN (segundos):</label>
+                        <input type="number" class="form-control" id="timeInput" min="1" value="15">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
-                    <button type="button" class="btn btn-primary" id="confirmIngredients">NOTIFICAR</button>
+                    <button type="button" class="btn btn-primary" id="confirmDishes">NOTIFICAR</button>
                 </div>
             </div>
         </div>

@@ -1,31 +1,29 @@
 const menuItems = [
-    // Platos principales
     { 
         name: "Enchiladas Verdes", 
-        prepTime: 15, // 30 segundos
+        prepTime: 15,
         ingredients: ["Tortillas", "Pollo", "Salsa verde", "Crema", "Queso"] 
     },
     { 
         name: "Pasta Alfredo", 
-        prepTime: 12, // 45 segundos
+        prepTime: 12,
         ingredients: ["Pasta", "Salsa alfredo", "Pollo", "Champiñones", "Queso parmesano"] 
     },
     { 
         name: "Hamburguesa Clásica", 
-        prepTime: 20, // 25 segundos
+        prepTime: 20,
         ingredients: ["Pan", "Carne", "Queso", "Lechuga", "Tomate"] 
     },
     { 
         name: "Ensalada César", 
-        prepTime: 14, // 20 segundos
+        prepTime: 14,
         ingredients: ["Lechuga", "Pollo", "Crutones", "Queso parmesano", "Aderezo"] 
     },
     { 
         name: "Sopa de Tortilla", 
-        prepTime: 10, // 35 segundos
+        prepTime: 10,
         ingredients: ["Caldo", "Tortillas", "Aguacate", "Queso", "Crema"] 
     },
-    
     { 
         name: "Pay de Queso", 
         prepTime: 7,
@@ -56,7 +54,7 @@ const modifications = [
 // Variables globales
 let orders = [];
 let timers = {};
-let unavailableIngredients = [];
+let unavailableDishes = [];
 let isPreparing = false;
 let preparationQueue = [];
 let orderInterval;
@@ -65,14 +63,14 @@ let orderInterval;
 $(document).ready(function() {
     setupModalEvents();
     setupTimeUpdates();
-    loadIngredientsModal();
+    loadDishesModal();
     generateInitialOrders();
     startOrderGeneration();
 });
 
 function setupModalEvents() {
-    $('#reportIngredients').click(() => $('#ingredientsModal').modal('show'));
-    $('#confirmIngredients').click(confirmIngredients);
+    $('#reportDishes').click(() => $('#dishesModal').modal('show'));
+    $('#confirmDishes').click(confirmDishes);
 }
 
 function setupTimeUpdates() {
@@ -80,20 +78,15 @@ function setupTimeUpdates() {
     updateCurrentTime();
 }
 
-function loadIngredientsModal() {
-    const ingredientsList = new Set();
+function loadDishesModal() {
+    const $dishesList = $('#dishesList');
+    $dishesList.empty();
+    
     menuItems.forEach(item => {
-        item.ingredients.forEach(ing => ingredientsList.add(ing));
-    });
-    
-    const $ingredientsList = $('#ingredientsList');
-    $ingredientsList.empty();
-    
-    [...ingredientsList].sort().forEach(ingredient => {
-        $ingredientsList.append(`
+        $dishesList.append(`
             <div class="ingredient-item">
-                <input type="checkbox" class="ingredient-checkbox" id="ing-${ingredient}" value="${ingredient}">
-                <label for="ing-${ingredient}">${ingredient.toUpperCase()}</label>
+                <input type="checkbox" class="ingredient-checkbox" id="dish-${item.name}" value="${item.name}">
+                <label for="dish-${item.name}">${item.name.toUpperCase()}</label>
             </div>
         `);
     });
@@ -115,25 +108,24 @@ function startOrderGeneration() {
 }
 
 function addRandomOrder() {
-    const availableItems = menuItems.filter(item => {
-        return !item.ingredients.some(ing => unavailableIngredients.includes(ing));
-    });
+    const availableItems = menuItems.filter(item => !unavailableDishes.includes(item.name));
     
     if (availableItems.length === 0) {
-        showNotification("NO HAY INGREDIENTES DISPONIBLES");
+        showNotification("NO HAY PLATILLOS DISPONIBLES");
         return;
     }
     
     const item = availableItems[Math.floor(Math.random() * availableItems.length)];
     const mod = modifications[Math.floor(Math.random() * modifications.length)];
     const id = `order-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const prepTime = parseInt($('#timeInput').val()) || 15;
     
     const newOrder = {
         id: id,
         name: item.name,
         modification: mod,
-        prepTime: item.prepTime,
-        timeRemaining: item.prepTime,
+        prepTime: prepTime,
+        timeRemaining: prepTime,
         time: new Date(),
         ingredients: item.ingredients,
         status: 'pending'
@@ -196,13 +188,28 @@ function startOrderTimer(order) {
             completeOrder(order.id);
         }
     }, 1000);
+}
+
+function cancelOrder(orderId) {
+    const wasPreparing = orders.find(o => o.id === orderId)?.status === 'preparing';
     
-    console.log(`Temporizador iniciado para: ${order.id}`);
+    if (timers[orderId]) {
+        clearInterval(timers[orderId]);
+        delete timers[orderId];
+    }
+    
+    preparationQueue = preparationQueue.filter(order => order.id !== orderId);
+    orders = orders.filter(order => order.id !== orderId);
+    
+    updateOrdersDisplay();
+    updateOrdersCount();
+    
+    if (wasPreparing && preparationQueue.length > 0) {
+        startNextOrder();
+    }
 }
 
 function completeOrder(orderId) {
-    console.log(`Completando pedido: ${orderId}`);
-    
     if (timers[orderId]) {
         clearInterval(timers[orderId]);
         delete timers[orderId];
@@ -212,8 +219,6 @@ function completeOrder(orderId) {
     
     const orderIndex = orders.findIndex(order => order.id === orderId);
     if (orderIndex !== -1) {
-        orders[orderIndex].status = 'completed';
-        
         const orderElement = $(`#${orderId}`);
         if (orderElement.length) {
             orderElement.addClass('fade-out');
@@ -248,9 +253,7 @@ function updateOrdersDisplay() {
         return 0;
     });
     
-    const displayOrders = sortedOrders.slice(0, 3);
-    
-    displayOrders.forEach((order) => {
+    sortedOrders.forEach((order) => {
         const isPreparingClass = order.status === 'preparing' ? 'preparing-order' : '';
         const isPendingClass = order.status === 'pending' ? 'pending-order' : '';
         
@@ -272,36 +275,51 @@ function updateOrdersDisplay() {
                         ${formatTime(order.timeRemaining)}
                     </span>
                 </div>
+                <button class="btn-cancel" data-id="${order.id}">
+                    <i class="fas fa-times"></i> CANCELAR
+                </button>
             </div>
         `);
         
         $ordersContainer.append($orderElement);
     });
+    
+    $('.btn-cancel').click(function() {
+        const orderId = $(this).data('id');
+        cancelOrder(orderId);
+    });
 }
 
-function confirmIngredients() {
-    const selectedIngredients = [];
+function confirmDishes() {
+    const selectedDishes = [];
     $('.ingredient-checkbox:checked').each(function() {
-        selectedIngredients.push($(this).val());
+        selectedDishes.push($(this).val());
     });
     
-    const otherIngredient = $('#otherIngredient').val().trim();
-    if (otherIngredient) {
-        selectedIngredients.push(otherIngredient);
-    }
-    
-    if (selectedIngredients.length === 0) {
-        showNotification("SELECCIONA AL MENOS UN INGREDIENTE");
+    if (selectedDishes.length === 0) {
+        showNotification("SELECCIONA AL MENOS UN PLATILLO");
         return;
     }
     
-    unavailableIngredients = [...new Set([...unavailableIngredients, ...selectedIngredients])];
-    showNotification(`INGREDIENTES AGOTADOS: ${selectedIngredients.join(', ')}`);
+    unavailableDishes = [...new Set([...unavailableDishes, ...selectedDishes])];
+    showNotification(`PLATILLOS AGOTADOS: ${selectedDishes.join(', ')}`);
     
-    $('#ingredientsModal').modal('hide');
-    $('.ingredient-checkbox').prop('checked', false);
-    $('#otherIngredient').val('');
+    const wasPreparing = orders.some(order => 
+        selectedDishes.includes(order.name) && order.status === 'preparing'
+    );
+    
+    orders = orders.filter(order => !selectedDishes.includes(order.name));
+    preparationQueue = preparationQueue.filter(order => !selectedDishes.includes(order.name));
+    
+    updateOrdersDisplay();
     updateOrdersCount();
+    
+    if (wasPreparing && preparationQueue.length > 0) {
+        startNextOrder();
+    }
+    
+    $('#dishesModal').modal('hide');
+    $('.ingredient-checkbox').prop('checked', false);
 }
 
 function showNotification(message) {
