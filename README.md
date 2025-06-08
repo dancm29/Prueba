@@ -17,7 +17,7 @@ Sistema web para visualizar y gestionar los pedidos realizados por los clientes 
 
 ## Dónde encontrar ayuda
 - Desarrollado por: [Allan Daniel Cruz Matias]
-- Con apoyo de herramientas generativas como ChatGPT (OpenAI) para estructura de código y diseño del formulario.
+- Con apoyo de herramientas generativas como ChatGPT (OpenAI) para estructura de código y parte del diseño.
 
 
 
