@@ -22,14 +22,10 @@ Este sistema web permite visualizar y gestionar los pedidos realizados por los c
 ### Interfaz principal
 ![alt text](image-1.png)
 > Muestra los pedidos en tiempo real con colores para los distintos estados y alertas visuales.
+> Cada platillo muestra restricciones alimenticias, tiempo de preparación y botones de acción.
 ### Agotamiento de platillos
 ![alt text](image-2.png)
 ![alt text](image-3.png)
-
-### Detalles del pedido
-![Detalle de pedido](./assets/captura3.png)
-
-> Cada platillo muestra restricciones alimenticias, tiempo de preparación y botones de acción.
 
 ## 🛠️ Tecnologías utilizadas
 - HTML5 / CSS3
