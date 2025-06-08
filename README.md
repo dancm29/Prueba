@@ -16,7 +16,8 @@ Sistema web para visualizar y gestionar los pedidos realizados por los clientes 
 4. Usar el botón para marcar cambios de estado.
 
 ## Dónde encontrar ayuda
-- Contactar al desarrollador del proyecto
+- Desarrollado por: [Allan Daniel Cruz Matias]
+- Con apoyo de herramientas generativas como ChatGPT (OpenAI) para estructura de código y diseño del formulario.
 
 
 
