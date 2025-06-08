@@ -1,23 +1,42 @@
-# Sistema de Pedidos para Cocina
+# 🍽️ Sistema de Pedidos para Cocina
 
-## Descripción del proyecto
-Sistema web para visualizar y gestionar los pedidos realizados por los clientes desde el área de cocina
+## 📝 Descripción del proyecto
+Este sistema web permite visualizar y gestionar los pedidos realizados por los clientes desde el área de cocina. Está diseñado para facilitar el control de tiempos, condiciones especiales y el estado de los platillos.
 
-## Funcionalidades
-- Visualización de pedidos por mesa
-- Estado actual del pedido (pendiente, en preparación, terminado)
-- Detalles de cada pedido con estimación de tiempo
-- Botón para actualizar estado del pedido
+## ⚙️ Funcionalidades
+- 📋 Visualización de pedidos activos por mesa.
+- 🔄 Estado de pedido: pendiente, en preparación, terminado.
+- ⏱️ Estimación visual de tiempo por platillo.
+- ❌ Botón para cancelar o cambiar el estado del pedido.
+- 🧾 Visualización de notas especiales (sin queso, sin cebolla, sin gluten, etc.).
+- 📦 Botón de productos agotados para notificar al servicio.
 
-## Cómo pueden usarlo los usuarios
-1. Ingresar al sistema desde un navegador en cocina.
-2. Seleccionar la mesa para ver el pedido.
-3. Visualizar los productos y estado actual.
-4. Usar el botón para marcar cambios de estado.
+## 👨‍🍳 ¿Cómo usarlo?
+1. Abrir el sistema en un navegador desde la cocina.
+2. Visualizar la lista de pedidos activos.
+3. Revisar notas y tiempos asignados.
+4. Actualizar el estado del pedido según corresponda.
+5. Cancelar pedidos si es necesario.
 
-## Dónde encontrar ayuda
+## 📸 Capturas de pantalla
+### Interfaz principal
+![alt text](image-1.png)
+> Muestra los pedidos en tiempo real con colores para los distintos estados y alertas visuales.
+### Agotamiento de platillos
+![alt text](image-2.png)
+![alt text](image-3.png)
+
+### Detalles del pedido
+![Detalle de pedido](./assets/captura3.png)
+
+> Cada platillo muestra restricciones alimenticias, tiempo de preparación y botones de acción.
+
+## 🛠️ Tecnologías utilizadas
+- HTML5 / CSS3
+- JavaScript
+- Bootstrap
+- Iconos de Font Awesome / Google Fonts
+
+## 🛠️ Dónde encontrar ayuda
 - Desarrollado por: [Allan Daniel Cruz Matias]
-- Con apoyo de herramientas generativas como ChatGPT (OpenAI) para estructura de código y parte del diseño.
-
-
-
+- Con apoyo de herraaminetas generativas como ChatGPT (OpenAI) para estructura de código y prate del diseño
