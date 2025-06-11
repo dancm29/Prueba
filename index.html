@@ -6,7 +6,325 @@
     <title>Sistema de Pedidos - Cocina</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f5f5f5;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .orders-count {
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 12px;
+            margin-left: 15px;
+            font-size: 22px;
+        }
+
+        .orders-container {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - 160px);
+        }
+
+        .order-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            border-left: 8px solid transparent;
+        }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .order-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 42px;
+            color: #2c3e50;
+            text-transform: uppercase;
+        }
+
+        .order-modifications {
+            font-size: 32px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .preparation-time {
+            font-size: 32px;
+            color: #16a085;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .preparation-time.urgent {
+            color: #e74c3c;
+        }
+
+        .time-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .time-input {
+            width: 80px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .btn-set-time {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-set-time:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-start {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn-start:hover {
+            background-color: #229954;
+        }
+
+        .btn-cancel {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-cancel:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-ingredients {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-ingredients:hover {
+            background-color: #2980b9;
+        }
+
+        .no-orders {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 36px;
+            padding: 50px;
+            margin: auto;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .preparing-order {
+            border-left-color: #3498db;
+            background-color: #f8f9fa;
+        }
+
+        .pending-order {
+            opacity: 0.7;
+            border-left-color: #95a5a6;
+        }
+
+        .preparing-label {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .waiting-label {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #95a5a6;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .modal-header {
+            background-color: #2c3e50;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .modal-title {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 20px;
+        }
+
+        .ingredient-checkbox {
+            margin-right: 15px;
+            transform: scale(1.5);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            text-transform: uppercase;
+        }
+
+        .notification.error {
+            background-color: #e74c3c;
+        }
+
+        .notification.warning {
+            background-color: #f39c12;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+
+        .notification-fade {
+            animation: notificationFade 3s ease forwards;
+        }
+
+        @keyframes notificationFade {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .time-placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .order-title {
+                font-size: 32px;
+            }
+            
+            .order-modifications {
+                font-size: 28px;
+            }
+            
+            .preparation-time {
+                font-size: 28px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Encabezado -->
@@ -29,8 +347,8 @@
         </div>
     </main>
 
-    <!-- Notificación -->
-    <div id="ingredient-notification" class="ingredient-notification"></div>
+    <!-- Notificaciones -->
+    <div id="notification" class="notification"></div>
 
     <!-- Pie de página -->
     <footer class="footer">
@@ -50,10 +368,6 @@
                     <div id="dishesList">
                         <!-- Los platillos se cargarán dinámicamente -->
                     </div>
-                    <div class="mb-3 mt-3">
-                        <label for="timeInput" class="form-label">TIEMPO DE PREPARACIÓN (segundos):</label>
-                        <input type="number" class="form-control" id="timeInput" min="1" value="15">
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
@@ -66,6 +380,409 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script>
+        const menuItems = [
+            { 
+                name: "Enchiladas Verdes", 
+                ingredients: ["Tortillas", "Pollo", "Salsa verde", "Crema", "Queso"] 
+            },
+            { 
+                name: "Pasta Alfredo", 
+                ingredients: ["Pasta", "Salsa alfredo", "Pollo", "Champiñones", "Queso parmesano"] 
+            },
+            { 
+                name: "Hamburguesa Clásica", 
+                ingredients: ["Pan", "Carne", "Queso", "Lechuga", "Tomate"] 
+            },
+            { 
+                name: "Ensalada César", 
+                ingredients: ["Lechuga", "Pollo", "Crutones", "Queso parmesano", "Aderezo"] 
+            },
+            { 
+                name: "Sopa de Tortilla", 
+                ingredients: ["Caldo", "Tortillas", "Aguacate", "Queso", "Crema"] 
+            },
+            { 
+                name: "Pay de Queso", 
+                ingredients: ["Galletas", "Queso crema", "Huevos", "Leche condensada"] 
+            },
+            { 
+                name: "Flan Napolitano", 
+                ingredients: ["Huevos", "Leche", "Azúcar", "Vainilla", "Caramelo"] 
+            },
+            { 
+                name: "Helado de Vainilla", 
+                ingredients: ["Helado", "Sirope", "Fruta", "Crema batida"] 
+            }
+        ];
+
+        const modifications = [
+            "",
+            "SIN QUESO",
+            "SIN LECHUGA",
+            "SIN TOMATE",
+            "SIN CEBOLLA",
+            "SIN GLUTEN",
+            "SIN LACTOSA"
+        ];
+
+        // Variables globales
+        let orders = [];
+        let timers = {};
+        let unavailableDishes = [];
+        let orderInterval;
+        let waiterNotifications = [];
+
+        // Inicialización
+        $(document).ready(function() {
+            setupModalEvents();
+            setupTimeUpdates();
+            loadDishesModal();
+            generateInitialOrders();
+            startOrderGeneration();
+        });
+
+        function setupModalEvents() {
+            $('#reportDishes').click(() => $('#dishesModal').modal('show'));
+            $('#confirmDishes').click(confirmDishes);
+        }
+
+        function setupTimeUpdates() {
+            setInterval(updateCurrentTime, 1000);
+            updateCurrentTime();
+        }
+
+        function loadDishesModal() {
+            const $dishesList = $('#dishesList');
+            $dishesList.empty();
+            
+            menuItems.forEach(item => {
+                $dishesList.append(`
+                    <div class="ingredient-item">
+                        <input type="checkbox" class="ingredient-checkbox" id="dish-${item.name}" value="${item.name}">
+                        <label for="dish-${item.name}">${item.name.toUpperCase()}</label>
+                    </div>
+                `);
+            });
+        }
+
+        function generateInitialOrders() {
+            const initialCount = Math.min(3, menuItems.length);
+            for (let i = 0; i < initialCount; i++) {
+                addRandomOrder();
+            }
+        }
+
+        function startOrderGeneration() {
+            orderInterval = setInterval(() => {
+                if (orders.length < 5) {
+                    addRandomOrder();
+                }
+            }, 10000);
+        }
+
+        function addRandomOrder() {
+            const availableItems = menuItems.filter(item => !unavailableDishes.includes(item.name));
+            
+            if (availableItems.length === 0) {
+                showNotification("NO HAY PLATILLOS DISPONIBLES", "warning");
+                return;
+            }
+            
+            const item = availableItems[Math.floor(Math.random() * availableItems.length)];
+            const mod = modifications[Math.floor(Math.random() * modifications.length)];
+            const id = `order-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+            
+            const newOrder = {
+                id: id,
+                name: item.name,
+                modification: mod,
+                customTime: null, // Tiempo personalizado establecido por el cocinero
+                timeRemaining: null, // Tiempo restante en preparación
+                time: new Date(),
+                ingredients: item.ingredients,
+                status: 'pending'
+            };
+            
+            orders.push(newOrder);
+            updateOrdersDisplay();
+            updateOrdersCount();
+        }
+
+        function setCustomTime(orderId, customTime) {
+            const order = orders.find(o => o.id === orderId);
+            if (order && customTime && parseInt(customTime) > 0) {
+                order.customTime = parseInt(customTime);
+                
+                notifyWaiter(`TIEMPO ESTABLECIDO: ${order.name} - ${customTime} segundos`);
+                showNotification(`TIEMPO ESTABLECIDO: ${customTime} SEGUNDOS`, "success");
+                
+                updateOrdersDisplay();
+            } else {
+                showNotification("INGRESA UN TIEMPO VÁLIDO", "error");
+            }
+        }
+
+        function startOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const inputElement = document.getElementById(`time-${orderId}`);
+            const customTime = inputElement ? parseInt(inputElement.value) : order.customTime;
+            
+            if (!customTime || customTime <= 0) {
+                showNotification("ESTABLECE UN TIEMPO VÁLIDO PRIMERO", "error");
+                return;
+            }
+            
+            // Establecer el tiempo de preparación en segundos
+            order.timeRemaining = customTime;
+            order.customTime = customTime;
+            order.status = 'preparing';
+            
+            notifyWaiter(`INICIADO: ${order.name} - ${customTime} segundos estimados`);
+            showNotification(`PREPARACIÓN INICIADA: ${order.name} - ${customTime} min`, "success");
+            
+            updateOrdersDisplay();
+            startOrderTimer(order);
+        }
+
+        function startOrderTimer(order) {
+            if (timers[order.id]) {
+                clearInterval(timers[order.id]);
+                delete timers[order.id];
+            }
+            
+            const formatTime = (sec) => {
+                const minutes = Math.floor(sec / 60);
+                const remainingSeconds = sec % 60;
+                return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            };
+            
+            timers[order.id] = setInterval(() => {
+                order.timeRemaining--;
+                
+                const timerElement = $(`.prep-time-${order.id}`);
+                if (timerElement.length) {
+                    timerElement.text(formatTime(order.timeRemaining));
+                    
+                    if (order.timeRemaining < 30) { // Menos de 30 segundos
+                        timerElement.parent().addClass('urgent');
+                    }
+                    
+                    // Notificar al mesero cuando quedan 60 segundos
+                    if (order.timeRemaining === 60) {
+                        notifyWaiter(`ALERTA: ${order.name} - 1 minuto restante`);
+                    }
+                    
+                    // Notificar al mesero cuando quedan 10 segundos
+                    if (order.timeRemaining === 10) {
+                        notifyWaiter(`URGENTE: ${order.name} - 10 segundos restantes`);
+                    }
+                }
+                
+                if (order.timeRemaining <= 0) {
+                    completeOrder(order.id);
+                }
+            }, 1000);
+        }
+
+        function cancelOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            if (timers[orderId]) {
+                clearInterval(timers[orderId]);
+                delete timers[orderId];
+            }
+            
+            notifyWaiter(`CANCELADO: ${order.name}`);
+            
+            orders = orders.filter(order => order.id !== orderId);
+            updateOrdersDisplay();
+            updateOrdersCount();
+        }
+
+        function completeOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            if (timers[orderId]) {
+                clearInterval(timers[orderId]);
+                delete timers[orderId];
+            }
+            
+            notifyWaiter(`LISTO: ${order.name} - Puede ser servido`);
+            showNotification(`PLATILLO LISTO: ${order.name}`, "success");
+            
+            const orderElement = $(`#${orderId}`);
+            if (orderElement.length) {
+                orderElement.addClass('fade-out');
+            }
+            
+            setTimeout(() => {
+                orders = orders.filter(order => order.id !== orderId);
+                updateOrdersDisplay();
+                updateOrdersCount();
+                
+                if (orders.length < 3) {
+                    addRandomOrder();
+                }
+            }, 500);
+        }
+
+        function updateOrdersDisplay() {
+            const $ordersContainer = $('#orders-container');
+            $ordersContainer.empty();
+            
+            if (orders.length === 0) {
+                $ordersContainer.append('<div class="no-orders"><i class="fas fa-clipboard-list"></i><p>NO HAY PEDIDOS PENDIENTES</p></div>');
+                return;
+            }
+            
+            const sortedOrders = [...orders].sort((a, b) => {
+                if (a.status === 'preparing') return -1;
+                if (b.status === 'preparing') return 1;
+                return 0;
+            });
+            
+            sortedOrders.forEach((order) => {
+                const isPreparingClass = order.status === 'preparing' ? 'preparing-order' : '';
+                const isPendingClass = order.status === 'pending' ? 'pending-order' : '';
+                
+                const formatTime = (sec) => {
+                    const minutes = Math.floor(sec / 60);
+                    const remainingSeconds = sec % 60;
+                    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+                };
+                
+                let timeDisplay = '';
+                let controlsDisplay = '';
+                
+                if (order.status === 'preparing' && order.timeRemaining !== null) {
+                    timeDisplay = `
+                        <div class="preparation-time ${order.timeRemaining < 30 ? 'urgent' : ''}">
+                            <i class="fas fa-clock"></i>
+                            <span class="prep-time-${order.id}">
+                                ${formatTime(order.timeRemaining)}
+                            </span>
+                        </div>
+                    `;
+                } else if (order.status === 'pending') {
+                    controlsDisplay = `
+                        <div class="time-controls">
+                            <label>Tiempo (segundos):</label>
+                            <input type="number" class="time-input" id="time-${order.id}" 
+                                   placeholder="" min="1" max="3600">
+                            <button class="btn-set-time" onclick="setCustomTime('${order.id}', document.getElementById('time-${order.id}').value)">
+                                <i class="fas fa-clock"></i> ESTABLECER
+                            </button>
+                        </div>
+                        <button class="btn-start" onclick="startOrder('${order.id}')">
+                            <i class="fas fa-play"></i> INICIAR
+                        </button>
+                    `;
+                }
+                
+                const $orderElement = $(`
+                    <div class="order-card ${isPreparingClass} ${isPendingClass}" id="${order.id}">
+                        ${order.status === 'preparing' ? '<div class="preparing-label">PREPARANDO</div>' : ''}
+                        ${order.status === 'pending' ? '<div class="waiting-label">EN ESPERA</div>' : ''}
+                        <h2 class="order-title">${order.name}</h2>
+                        ${order.modification ? `<div class="order-modifications">${order.modification}</div>` : ''}
+                        ${timeDisplay}
+                        ${controlsDisplay}
+                        <button class="btn-cancel" onclick="cancelOrder('${order.id}')">
+                            <i class="fas fa-times"></i> CANCELAR
+                        </button>
+                    </div>
+                `);
+                
+                $ordersContainer.append($orderElement);
+            });
+        }
+
+        function confirmDishes() {
+            const selectedDishes = [];
+            $('.ingredient-checkbox:checked').each(function() {
+                selectedDishes.push($(this).val());
+            });
+            
+            if (selectedDishes.length === 0) {
+                showNotification("SELECCIONA AL MENOS UN PLATILLO", "error");
+                return;
+            }
+            
+            unavailableDishes = [...new Set([...unavailableDishes, ...selectedDishes])];
+            
+            notifyWaiter(`PLATILLOS AGOTADOS: ${selectedDishes.join(', ')}`);
+            showNotification(`PLATILLOS AGOTADOS: ${selectedDishes.join(', ')}`, "warning");
+            
+            const affectedOrders = orders.filter(order => selectedDishes.includes(order.name));
+            affectedOrders.forEach(order => {
+                if (timers[order.id]) {
+                    clearInterval(timers[order.id]);
+                    delete timers[order.id];
+                }
+            });
+            
+            orders = orders.filter(order => !selectedDishes.includes(order.name));
+            updateOrdersDisplay();
+            updateOrdersCount();
+            
+            $('#dishesModal').modal('hide');
+            $('.ingredient-checkbox').prop('checked', false);
+        }
+
+        function notifyWaiter(message) {
+            const notification = {
+                message: message,
+                time: new Date(),
+                id: Date.now()
+            };
+            
+            waiterNotifications.push(notification);
+            console.log(`NOTIFICACIÓN AL MESERO: ${message}`);
+            showNotification(`📱 MESERO NOTIFICADO: ${message}`, "success");
+        }
+
+        function showNotification(message, type = "success") {
+            const $notification = $('#notification');
+            $notification.removeClass('error warning').addClass(type);
+            $notification.text(message).addClass('notification-fade').show();
+            
+            setTimeout(() => {
+                $notification.removeClass('notification-fade');
+                setTimeout(() => $notification.hide(), 500);
+            }, 3000);
+        }
+
+        function updateOrdersCount() {
+            $('.orders-count').text(orders.length);
+        }
+
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            $('#current-time').text(now.toLocaleDateString('es-ES', options).toUpperCase());
+        }
+
+        function getWaiterNotifications() {
+            return waiterNotifications;
+        }
+
+        function markNotificationAsRead(notificationId) {
+            waiterNotifications = waiterNotifications.filter(n => n.id !== notificationId);
+        }
+    </script>
 </body>
 </html>
