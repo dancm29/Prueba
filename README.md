@@ -47,6 +47,9 @@ Este sistema web permite visualizar y gestionar los pedidos realizados por los c
 - ├── index.html
 - └── README.md
 
+## 📄 Licencia
+Este proyecto está bajo la licencia [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
+Desarrollado por: **Allan Daniel Cruz Matias**
 
 ## 🛠️ Autor del proyecto
 - Desarrollado por: [Allan Daniel Cruz Matias]
