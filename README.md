@@ -33,6 +33,6 @@ Este sistema web permite visualizar y gestionar los pedidos realizados por los c
 - Bootstrap
 - Iconos de Font Awesome / Google Fonts
 
-## 🛠️ Dónde encontrar ayuda
+## 🛠️ Autor del proyecto
 - Desarrollado por: [Allan Daniel Cruz Matias]
 - Con apoyo de herraaminetas generativas como ChatGPT (OpenAI) para estructura de código y prate del diseño
